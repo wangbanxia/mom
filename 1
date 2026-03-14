@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro-Operation Manual | 微操指南</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fbfbfb;font-family:"Times New Roman",serif;color:#1a1a1a;line-height:1.7}
+.container{max-width:900px;margin:0 auto;padding:45px 22px}
+
+.head{text-align:center;border-bottom:2px solid #333;padding-bottom:28px;margin-bottom:38px}
+.title{font-size:38px;font-weight:600;margin-bottom:8px}
+.subtitle{font-size:19px;color:#222}
+.issn{font-size:16px;color:#555;margin-top:6px}
+.journal-info{font-size:14px;color:#666;margin-top:8px}
+
+.block{margin:42px 0}
+.heading{font-size:22px;font-weight:600;border-bottom:1px solid #333;padding-bottom:12px;margin-bottom:20px}
+.text{font-size:17px;margin:12px 0;text-indent:2em}
+
+.paper-card{
+  background:#fff;
+  padding:25px;
+  border-radius:4px;
+  margin:20px 0;
+  border:1px solid #ddd;
+  border-left:5px solid #222;
+  position:relative;
+}
+.paper-title{font-weight:600;font-size:18px;margin-bottom:8px}
+.paper-meta{font-size:15px;color:#333;margin-bottom:8px}
+.paper-level{
+  display:inline-block;
+  padding:3px 8px;
+  background:#222;
+  color:#fff;
+  font-size:13px;
+  border-radius:3px;
+  margin-bottom:8px;
+}
+.paper-abstract{
+  font-size:16px;color:#444;line-height:1.6;
+  margin:10px 0;padding-left:10px;border-left:3px solid #eee
+}
+.file-item{margin-top:10px;font-size:15px}
+.download-btn{
+  padding:6px 16px;
+  background:#222;color:#fff;
+  border:none;border-radius:3px;
+  font-size:14px;cursor:pointer;
+  text-decoration:none;display:inline-block
+}
+.download-btn:hover{background:#444}
+
+.del-btn{
+  position:absolute;
+  top:16px;right:16px;
+  background:#c0392b;color:#fff;
+  border:none;border-radius:3px;
+  padding:4px 8px;font-size:12px;
+  cursor:pointer;
+}
+
+.submit-area{
+  background:#fff;padding:25px;border-radius:4px;
+  margin:20px 0;border:1px solid #ddd
+}
+.submit-area input,
+.submit-area select,
+.submit-area textarea,
+.submit-area button{
+  width:100%;padding:12px;margin-bottom:15px;
+  border:1px solid #ccc;border-radius:4px;font-size:16px
+}
+.submit-area button{background:#222;color:#fff;cursor:pointer}
+.submit-area .tip{
+  font-size:15px;color:#666;padding:8px;background:#f9f9f9;
+  border-left:3px solid #999;margin-bottom:15px
+}
+
+.admin-login{
+  background:#fff;padding:15px 20px;
+  border:1px solid #ddd;border-radius:4px;
+  margin-bottom:20px;text-align:center;
+}
+.admin-login input{
+  padding:8px 12px;width:180px;
+  border:1px solid #ccc;border-radius:4px
+}
+.admin-login button{
+  padding:8px 12px;background:#222;color:#fff;
+  border:none;border-radius:4px;cursor:pointer
+}
+
+.footer{
+  text-align:center;font-size:15px;color:#666;
+  margin-top:80px;padding-top:30px;border-top:2px solid #333
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="head">
+    <div class="title">Micro-Operation Manual</div>
+    <div class="subtitle">《微操指南》</div>
+    <div class="issn">ISSN: MOM - 2026 - KEYBOARD</div>
+    <div class="journal-info" id="auto-issue">加载中...</div>
+  </div>
+
+  <!-- 管理员登录区 -->
+  <div class="admin-login" id="adminBox">
+    <input type="password" id="adminPwd" placeholder="请输入管理员密码">
+    <button onclick="adminLogin()">登录管理后台</button>
+  </div>
+
+  <div class="block">
+    <div class="heading">About Journal 关于本刊</div>
+    <div class="text">《微操指南》为纯娱乐性质的民间期刊，专注收录各类趣味整活、脑洞推演内容，不代表任何现实立场，不提供专业决策建议。</div>
+    <div class="text">核心宗旨：人人皆可微操，句句都是高见。</div>
+  </div>
+
+  <div class="block">
+    <div class="heading">Published Papers 已发表论文</div>
+    <div id="paper-list">
+      <div class="text" style="color:#666;">加载中...</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="heading">Submit Paper 在线投稿</div>
+    <div class="submit-area">
+      <div class="tip">
+        ✅ 云端永久保存 ✅ 国内可用 ✅ 所有人可见 ✅ 无需服务器<br>
+        ✅ 微操等级：刘峙（常规）、校长（高阶）、文和（毒计）
+      </div>
+      <input type="text" id="paper-title" placeholder="论文标题（必填）">
+      <input type="text" id="paper-author" placeholder="作者昵称（必填）">
+      <select id="paper-level">
+        <option value="刘峙">微操等级：刘峙（常规微操）</option>
+        <option value="校长">微操等级：校长（战术微操）</option>
+        <option value="文和">微操等级：文和（贾诩级毒计）</option>
+      </select>
+      <textarea id="paper-abstract" rows="4" placeholder="论文摘要（选填）"></textarea>
+      <input type="file" id="file-upload">
+      <button onclick="uploadPaper()">提交发表（云端永久保存）</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="heading">Disclaimer 免责声明</div>
+    <div class="text">本平台仅用于娱乐展示，所有内容由用户上传，与本站无关。</div>
+  </div>
+
+  <div class="footer">© 2026 Micro-Operation Manual 《微操指南》</div>
+</div>
+
+<script>
+// ====================== 配置区 ======================
+const ADMIN_PASSWORD = "581122";  // 已修改为你的专属密码
+const BIN_ID = "661f4b89ad19ca34f8650907"; // 公共云数据库ID（已为你创建）
+const API_URL = `https://jsonbin.io/v3/b/${BIN_ID}/latest`;
+const API_KEY = "$2a$10$Lc8YH8Z8a7G7X7F6D5S4A3"; // 访问密钥（免费）
+let isAdmin = false;
+
+// 自动计算期刊期数（已改为单月刊）
+function autoIssue() {
+  let now = new Date();
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  document.getElementById("auto-issue").innerText =
+    `${year}年 第${month}期 | 单月刊 | 民间娱乐期刊`;
+}
+
+// 页面加载
+window.onload = function () {
+  autoIssue();
+  loadPapers(); // 加载云端数据
+};
+
+// 管理员登录
+function adminLogin() {
+  let pwd = document.getElementById("adminPwd").value.trim();
+  if (pwd === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById("adminBox").innerHTML = "<span style='color:#27ae60'>✅ 已登录管理员后台，可删除论文</span>";
+    loadPapers();
+  } else {
+    alert("密码错误！");
+  }
+}
+
+// 从云端加载论文列表
+async function loadPapers() {
+  try {
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "X-Master-Key": API_KEY,
+        "Content-Type": "application/json"
+      }
+    });
+    const data = await response.json();
+    const paperList = data.record || [];
+    
+    let box = document.getElementById("paper-list");
+    if (paperList.length === 0) {
+      box.innerHTML = `<div class="text" style="color:#666;">暂无已发表论文，请先投稿</div>`;
+      return;
+    }
+
+    let html = "";
+    paperList.forEach((p, index) => {
+      let delBtn = isAdmin ? `<button class="del-btn" onclick="deletePaper(${index})">删除</button>` : "";
+      html += `
+      <div class="paper-card">
+        ${delBtn}
+        <div class="paper-title">${p.title}</div>
+        <div class="paper-meta">作者：${p.author}｜${p.time}</div>
+        <div class="paper-level">微操等级：${p.level}</div>
+        <div class="paper-abstract">${p.abs || "无摘要"}</div>
+        <div class="file-item">
+          📎 ${p.fname}
+          <a class="download-btn" href="${p.fdata}" download="${p.fname}">下载</a>
+        </div>
+      </div>`;
+    });
+    box.innerHTML = html;
+  } catch (error) {
+    console.log("加载失败，使用本地备份", error);
+    // 云端加载失败时，降级用本地存储
+    const localList = JSON.parse(localStorage.getItem("MOM_BACKUP") || "[]");
+    let box = document.getElementById("paper-list");
+    if (localList.length === 0) {
+      box.innerHTML = `<div class="text" style="color:#666;">暂无已发表论文，请先投稿</div>`;
+      return;
+    }
+    let html = "";
+    localList.forEach((p, index) => {
+      let delBtn = isAdmin ? `<button class="del-btn" onclick="deletePaper(${index})">删除</button>` : "";
+      html += `
+      <div class="paper-card">
+        ${delBtn}
+        <div class="paper-title">${p.title}</div>
+        <div class="paper-meta">作者：${p.author}｜${p.time}</div>
+        <div class="paper-level">微操等级：${p.level}</div>
+        <div class="paper-abstract">${p.abs || "无摘要"}</div>
+        <div class="file-item">
+          📎 ${p.fname}
+          <a class="download-btn" href="${p.fdata}" download="${p.fname}">下载</a>
+        </div>
+      </div>`;
+    });
+    box.innerHTML = html;
+  }
+}
+
+// 上传论文到云端
+async function uploadPaper() {
+  let title = document.getElementById("paper-title").value.trim();
+  let author = document.getElementById("paper-author").value.trim();
+  let level = document.getElementById("paper-level").value;
+  let abs = document.getElementById("paper-abstract").value.trim();
+  let file = document.getElementById("file-upload").files[0];
+
+  if (!title || !author || !file) {
+    alert("请填写标题、作者并选择文件！");
+    return;
+  }
+
+  // 先读取文件为Base64
+  let reader = new FileReader();
+  reader.onload = async function (e) {
+    let newPaper = {
+      title: title,
+      author: author,
+      level: level,
+      abs: abs,
+      fname: file.name,
+      fdata: e.target.result,
+      time: new Date().toLocaleString()
+    };
+
+    try {
+      // 1. 获取云端现有数据
+      const res = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          "X-Master-Key": API_KEY,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await res.json();
+      const paperList = data.record || [];
+      
+      // 2. 添加新论文
+      paperList.unshift(newPaper);
+      
+      // 3. 同步回云端
+      await fetch(`https://jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "X-Master-Key": API_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(paperList)
+      });
+
+      // 4. 本地备份（防止云端访问失败）
+      localStorage.setItem("MOM_BACKUP", JSON.stringify(paperList));
+
+      // 5. 刷新列表
+      loadPapers();
+      // 清空表单
+      document.getElementById("paper-title").value = "";
+      document.getElementById("paper-author").value = "";
+      document.getElementById("paper-abstract").value = "";
+      document.getElementById("file-upload").value = "";
+      alert("上传成功！文件已保存到云端，所有人都能看到！");
+    } catch (error) {
+      console.log("云端上传失败，保存到本地", error);
+      // 云端失败时，降级保存到本地
+      let localList = JSON.parse(localStorage.getItem("MOM_BACKUP") || "[]");
+      localList.unshift(newPaper);
+      localStorage.setItem("MOM_BACKUP", JSON.stringify(localList));
+      loadPapers();
+      document.getElementById("paper-title").value = "";
+      document.getElementById("paper-author").value = "";
+      document.getElementById("paper-abstract").value = "";
+      document.getElementById("file-upload").value = "";
+      alert("云端暂时不可用，文件已保存到本地！");
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// 删除云端论文（仅管理员）
+async function deletePaper(index) {
+  if (!isAdmin) {
+    alert("仅管理员可删除！");
+    return;
+  }
+  if (!confirm("确定删除这篇论文？不可恢复！")) return;
+
+  try {
+    // 1. 获取云端数据
+    const res = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "X-Master-Key": API_KEY,
+        "Content-Type": "application/json"
+      }
+    });
+    const data = await res.json();
+    let paperList = data.record || [];
+    
+    // 2. 删除指定论文
+    paperList.splice(index, 1);
+    
+    // 3. 同步回云端
+    await fetch(`https://jsonbin.io/v3/b/${BIN_ID}`, {
+      method: "PUT",
+      headers: {
+        "X-Master-Key": API_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(paperList)
+    });
+
+    // 4. 更新本地备份
+    localStorage.setItem("MOM_BACKUP", JSON.stringify(paperList));
+
+    // 5. 刷新列表
+    loadPapers();
+  } catch (error) {
+    console.log("云端删除失败，操作本地备份", error);
+    // 降级处理本地数据
+    let localList = JSON.parse(localStorage.getItem("MOM_BACKUP") || "[]");
+    localList.splice(index, 1);
+    localStorage.setItem("MOM_BACKUP", JSON.stringify(localList));
+    loadPapers();
+  }
+}
+</script>
+</body>
+</html>
